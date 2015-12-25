@@ -7,3 +7,4 @@ before_install: gem install bundler -v 1.11.2
 install:
   - npm install elm
   - bundle install
+  - elm-package install
