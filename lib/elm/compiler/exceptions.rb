@@ -1,5 +1,7 @@
 module Elm
   class Compiler
-    class CompileError < StandardError; end
+    class Error < StandardError; end
+    class ExecutableNotFound < Error; end
+    class CompileError < Error; end
   end
 end
