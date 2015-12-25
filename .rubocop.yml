@@ -8,5 +8,4 @@ Style/Documentation:
     - 'lib/elm/compiler.rb'
     - 'lib/elm/compiler/version.rb'
 
-Style/RaiseArgs:
-  EnforcedStyle: compact
+
