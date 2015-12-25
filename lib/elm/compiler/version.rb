@@ -1,5 +1,5 @@
 module Elm
-  module Compiler
+  class Compiler
     VERSION = "0.1.0"
   end
 end
