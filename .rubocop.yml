@@ -1,0 +1,12 @@
+Metrics/LineLength:
+  Max: 120
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'lib/elm/compiler.rb'
+    - 'lib/elm/compiler/version.rb'
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
