@@ -35,7 +35,7 @@ module Elm
 
       def elm_make(elm_files, output_path)
         Open3.popen3('elm-make', *elm_files, '--yes', '--output', output_path) do |_stdin, _stdout, stderr, wait_thr|
-          fail CompileError, stderr.gets if wait_thr.value.exitstatus != 0
+          fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
         end
       end
     end
