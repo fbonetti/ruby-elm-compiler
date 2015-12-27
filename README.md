@@ -30,6 +30,17 @@ Or install it yourself as:
 
 > NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm-make` executable can't be found in the current `PATH`, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
 
+```ruby
+Elm::Compiler.compile(elm_files, output_path = nil)
+```
+
+* `elm_files`: Accepts a single file path or an array of file paths.
+* `output_path`: Path to the output file. If left blank, the compiled Javascript will be returned as a string.
+
+
+
+## Examples
+
 Compile to string of javascript:
 
 ```ruby
@@ -56,4 +67,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/fbonet
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
