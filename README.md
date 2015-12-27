@@ -4,7 +4,7 @@
 
 Ruby wrapper for the [Elm language compiler](https://github.com/elm-lang/elm-compiler).
 
-The project is heavily inspired by [sprockets-elm](https://github.com/NoRedInk/sprockets-elm/blob/0752748904edee0c25f2dd49cc39186c2ef61b08/lib/elm_compiler.rb) repository, written by [rtfeldman](https://github.com/rtfeldman).
+The project is heavily inspired by the [sprockets-elm](https://github.com/NoRedInk/sprockets-elm/blob/0752748904edee0c25f2dd49cc39186c2ef61b08/lib/elm_compiler.rb) repository, written by [rtfeldman](https://github.com/rtfeldman).
 
 ## Installation
 
