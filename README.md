@@ -1,12 +1,16 @@
-# Elm::Compiler
+# elm-compiler
 
 [![Build Status](https://travis-ci.org/fbonetti/ruby-elm-compiler.svg?branch=master)](https://travis-ci.org/fbonetti/ruby-elm-compiler)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/elm/compiler`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby wrapper for the [Elm language compiler](https://github.com/elm-lang/elm-compiler).
 
-TODO: Delete this and the text above, and describe your gem
+The project is heavily inspired by [sprockets-elm](https://github.com/NoRedInk/sprockets-elm/blob/0752748904edee0c25f2dd49cc39186c2ef61b08/lib/elm_compiler.rb) repository, written by [rtfeldman](https://github.com/rtfeldman).
 
 ## Installation
+
+Install the Elm platform:
+
+http://elm-lang.org/install
 
 Add this line to your application's Gemfile:
 
@@ -24,17 +28,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+> NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm-make` executable can't be found in the current `PATH`, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
 
-## Development
+Compile to string of javascript:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+Elm::Compiler.compile("Clock.elm")
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Compile multiple files:
+
+```ruby
+Elm::Compiler.compile(["Clock.elm", "Counter.elm"])
+```
+
+Compile to file:
+
+```ruby
+Elm::Compiler.compile("Clock.elm", "elm.js")
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/elm-compiler.
+Bug reports and pull requests are welcome on GitHub at https://github.com/fbonetti/elm-compiler.
 
 
 ## License
