@@ -41,13 +41,13 @@ Elm::Compiler.compile(elm_files, output_path = nil)
 
 ## Examples
 
-Compile to string of javascript:
+Compile to string of Javascript:
 
 ```ruby
 Elm::Compiler.compile("Clock.elm")
 ```
 
-Compile multiple files:
+Compile multiple files to a string of Javascript:
 
 ```ruby
 Elm::Compiler.compile(["Clock.elm", "Counter.elm"])
@@ -57,6 +57,12 @@ Compile to file:
 
 ```ruby
 Elm::Compiler.compile("Clock.elm", "elm.js")
+```
+
+Compile multiple files to file:
+
+```ruby
+Elm::Compiler.compile(["Clock.elm", "Counter.elm"], "elm.js")
 ```
 
 ## Contributing
