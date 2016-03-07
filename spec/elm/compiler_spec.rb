@@ -49,5 +49,16 @@ describe Elm::Compiler do
         expect(File.exist?('elm.js')).to be(true)
       end
     end
+
+    context 'elm_path given' do
+      it 'should raise ExecutableNoFound if path is bad' do
+        code = proc { Elm::Compiler.compile(test_file, nil, "bad/path/to/elm") }
+        expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
+      end
+
+      it 'should work if path is good' do
+        Elm::Compiler.compile(test_file, nil, `which elm`.chomp)
+      end
+    end
   end
 end
