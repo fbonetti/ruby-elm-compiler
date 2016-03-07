@@ -9,7 +9,7 @@ describe Elm::Compiler do
 
   describe '#compile' do
     it "should raise ExecutableNotFound if Elm isn't installed" do
-      allow(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
+      allow_any_instance_of(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
       code = proc { Elm::Compiler.compile(test_file) }
       expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
     end
