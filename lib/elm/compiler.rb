@@ -1,7 +1,6 @@
 require 'elm/compiler/exceptions'
 require 'open3'
 require 'tempfile'
-require 'mkmf'
 
 module Elm
   class Compiler
@@ -48,7 +47,7 @@ module Elm
     end
 
     def elm_executable
-      elm_make_path || find_executable0('elm-make')
+      elm_make_path || `which elm-make`.chomp
     end
   end
 end
