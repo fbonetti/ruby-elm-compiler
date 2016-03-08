@@ -41,7 +41,8 @@ module Elm
     end
 
     def to_file(path = output_path)
-      Open3.popen3(elm_executable, *elm_files, '--yes', '--output', path) do |_stdin, _stdout, stderr, wait_thr|
+      # set locale to utf8 as a workaround until https://github.com/elm-lang/elm-make/pull/83 is merged and released
+      Open3.popen3({"LANG" => "en_US.UTF8" }, elm_executable, *elm_files, '--yes', '--output', path) do |_stdin, _stdout, stderr, wait_thr|
         fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
       end
     end
