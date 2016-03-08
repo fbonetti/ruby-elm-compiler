@@ -9,7 +9,7 @@ describe Elm::Compiler do
 
   describe '#compile' do
     it "should raise ExecutableNotFound if Elm isn't installed" do
-      allow(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
+      allow_any_instance_of(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
       code = proc { Elm::Compiler.compile(test_file) }
       expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
     end
@@ -38,15 +38,26 @@ describe Elm::Compiler do
       end
 
       it 'should write to the given output_path' do
-        output = Elm::Compiler.compile(test_file, 'elm.js')
+        output = Elm::Compiler.compile(test_file, output_path: 'elm.js')
         expect(output).to be_nil
         expect(File.exist?('elm.js')).to be(true)
       end
 
       it 'should accept a string or an array of strings' do
-        output = Elm::Compiler.compile([test_file], 'elm.js')
+        output = Elm::Compiler.compile([test_file], output_path: 'elm.js')
         expect(output).to be_nil
         expect(File.exist?('elm.js')).to be(true)
+      end
+    end
+
+    context 'elm_make_path given' do
+      it 'should raise ExecutableNoFound if path is bad' do
+        code = proc { Elm::Compiler.compile(test_file, elm_make_path: "bad/path/to/elm-make") }
+        expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
+      end
+
+      it 'should work if path is good' do
+        Elm::Compiler.compile(test_file, elm_make_path: `which elm-make`.chomp)
       end
     end
   end

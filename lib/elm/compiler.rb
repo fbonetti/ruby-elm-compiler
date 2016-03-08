@@ -1,43 +1,53 @@
 require 'elm/compiler/exceptions'
 require 'open3'
 require 'tempfile'
-require 'mkmf'
 
 module Elm
   class Compiler
-    class << self
-      def compile(elm_files, output_path = nil)
-        fail ExecutableNotFound unless elm_executable_exists?
+    def self.compile(*args)
+      new(*args).compile
+    end
 
-        if output_path
-          elm_make(elm_files, output_path)
-        else
-          compile_to_string(elm_files)
-        end
+    def initialize(elm_files, output_path: nil, elm_make_path: nil)
+      @elm_files = elm_files
+      @output_path = output_path
+      @elm_make_path = elm_make_path
+    end
+
+    attr_reader :elm_files, :output_path, :elm_make_path
+
+    def compile
+      fail ExecutableNotFound unless elm_executable_exists?
+
+      if output_path
+        to_file
+      else
+        to_s
       end
+    end
 
-      private
+    private
 
-      def elm_executable_exists?
-        !find_executable0('elm-make').nil?
+    def elm_executable_exists?
+      File.exist?(elm_executable)
+    end
+
+    def to_s
+      Tempfile.open(['elm', '.js']) do |tempfile|
+        to_file(tempfile.path)
+        return File.read tempfile.path
       end
+    end
 
-      def compile_to_string(elm_files)
-        output = ''
-
-        Tempfile.open(['elm', '.js']) do |tempfile|
-          elm_make(elm_files, tempfile.path)
-          output = File.read tempfile.path
-        end
-
-        output
+    def to_file(path = output_path)
+      # set locale to utf8 as a workaround until https://github.com/elm-lang/elm-make/pull/83 is merged and released
+      Open3.popen3({"LANG" => "en_US.UTF8" }, elm_executable, *elm_files, '--yes', '--output', path) do |_stdin, _stdout, stderr, wait_thr|
+        fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
       end
+    end
 
-      def elm_make(elm_files, output_path)
-        Open3.popen3('elm-make', *elm_files, '--yes', '--output', output_path) do |_stdin, _stdout, stderr, wait_thr|
-          fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
-        end
-      end
+    def elm_executable
+      elm_make_path || `which elm-make`.chomp
     end
   end
 end
