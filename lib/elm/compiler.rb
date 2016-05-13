@@ -24,14 +24,10 @@ module Elm
       end
 
       def compile_to_string(elm_executable, elm_files)
-        output = ''
-
         Tempfile.open(['elm', '.js']) do |tempfile|
           elm_make(elm_executable, elm_files, tempfile.path)
-          output = File.read tempfile.path
+          return File.read tempfile.path
         end
-
-        output
       end
 
       def elm_make(elm_executable, elm_files, output_path)
