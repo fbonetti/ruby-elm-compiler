@@ -9,7 +9,7 @@ describe Elm::Compiler do
 
   describe '#compile' do
     it "should raise ExecutableNotFound if Elm isn't installed" do
-      allow_any_instance_of(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
+      allow(Elm::Compiler).to receive(:elm_executable_exists?).and_return(false)
       code = proc { Elm::Compiler.compile(test_file) }
       expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
     end
@@ -52,12 +52,8 @@ describe Elm::Compiler do
 
     context 'elm_make_path given' do
       it 'should raise ExecutableNoFound if path is bad' do
-        code = proc { Elm::Compiler.compile(test_file, elm_make_path: "bad/path/to/elm-make") }
+        code = proc { Elm::Compiler.compile(test_file, elm_make_path: "/dev/null") }
         expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
-      end
-
-      it 'should work if path is good' do
-        Elm::Compiler.compile(test_file, elm_make_path: `which elm-make`.chomp)
       end
     end
   end
