@@ -3,8 +3,10 @@ cache: bundler
 rvm:
   - 2.2.3
 sudo: false
-before_install: gem install bundler -v 1.11.2
+before_install:
+  - gem install bundler -v 1.11.2
 install:
   - bundle install
   - npm install elm
+  - rm -r elm-stuff
   - elm-package install --yes
