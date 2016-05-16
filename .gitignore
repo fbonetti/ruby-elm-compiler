@@ -8,6 +8,5 @@
 /spec/reports/
 /tmp/
 /elm-stuff/
-/elm-package.json
 /elm.js
 *.gem
