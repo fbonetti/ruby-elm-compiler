@@ -28,14 +28,15 @@ Or install it yourself as:
 
 ## Usage
 
-> NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm-make` executable can't be found in the current `PATH`, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
+> NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm-make` executable can't be found in the current `PATH` or via the `elm_make_path` option, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
 
 ```ruby
-Elm::Compiler.compile(elm_files, output_path = nil)
+Elm::Compiler.compile(elm_files, output_path: nil, elm_make_path: nil)
 ```
 
 * `elm_files`: Accepts a single file path or an array of file paths.
 * `output_path`: Path to the output file. If left blank, the compiled Javascript will be returned as a string.
+* `elm_make_path`: Path to the `elm-make` executable. If left blank, the executable will be looked up in the current `PATH`.
 
 
 
@@ -56,13 +57,13 @@ Elm::Compiler.compile(["Clock.elm", "Counter.elm"])
 Compile to file:
 
 ```ruby
-Elm::Compiler.compile("Clock.elm", "elm.js")
+Elm::Compiler.compile("Clock.elm", output_path: "elm.js")
 ```
 
 Compile multiple files to file:
 
 ```ruby
-Elm::Compiler.compile(["Clock.elm", "Counter.elm"], "elm.js")
+Elm::Compiler.compile(["Clock.elm", "Counter.elm"], output_path: "elm.js")
 ```
 
 ## Contributing

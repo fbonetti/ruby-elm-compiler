@@ -1,3 +1,4 @@
-import Graphics.Element exposing (show)
+import Html exposing (text)
 
-main = show 3
+main =
+  text "test"
