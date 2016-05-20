@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mkmf'
 
 describe Elm::Compiler do
   let(:test_file) { 'spec/fixtures/Test.elm' }
@@ -54,6 +55,12 @@ describe Elm::Compiler do
       it 'should raise ExecutableNoFound if path is bad' do
         code = proc { Elm::Compiler.compile(test_file, elm_make_path: "/dev/null") }
         expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
+      end
+
+      it 'should work if path is good' do
+        output = Elm::Compiler.compile(test_file, elm_make_path: find_executable0('elm-make'))
+        expect(output).to be_instance_of(String)
+        expect(output.empty?).to be(false)
       end
     end
   end
