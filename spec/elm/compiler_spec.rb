@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'mkmf'
 
 describe Elm::Compiler do
   let(:test_file) { 'spec/fixtures/Test.elm' }
@@ -58,7 +57,7 @@ describe Elm::Compiler do
       end
 
       it 'should work if path is good' do
-        output = Elm::Compiler.compile(test_file, elm_make_path: find_executable0('elm-make'))
+        output = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make')
         expect(output).to be_instance_of(String)
         expect(output.empty?).to be(false)
       end
