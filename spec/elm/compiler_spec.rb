@@ -62,5 +62,14 @@ describe Elm::Compiler do
         expect(output.empty?).to be(false)
       end
     end
+
+    context 'native debugger' do
+      it 'output should include native debugger functions if debug set to true' do
+        prod = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make')
+        dev = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make', debug: true)
+        expect(dev.length).to be > prod.length
+        expect(dev).to include('_elm_lang$virtual_dom$Native_Debug')
+      end
+    end
   end
 end
