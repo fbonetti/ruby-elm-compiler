@@ -8,4 +8,3 @@ before_install:
 install:
   - bundle install
   - npm install -g elm
-  - elm-package install --yes
