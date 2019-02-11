@@ -78,7 +78,7 @@ describe Elm::Compiler do
       end
     end
 
-    context 'native debugger' do
+    context 'debug flag' do
       let(:prod) { Elm::Compiler.compile(test_file, elm_path: elm_path) }
 
       context 'when debug is set to true' do
@@ -91,6 +91,24 @@ describe Elm::Compiler do
       context 'when debug is set to false' do
         it 'should not include the debug flag' do
           dev = Elm::Compiler.compile(test_file, elm_path: elm_path, debug: false)
+          expect(dev.length).to eq prod.length
+        end
+      end
+    end
+
+    context 'optimize flag' do
+      let(:prod) { Elm::Compiler.compile(test_file, elm_path: elm_path) }
+
+      context 'when optimize is set to true' do
+        it 'should include the optimize flag' do
+          dev = Elm::Compiler.compile(test_file, elm_path: elm_path, optimize: true)
+          expect(dev.length).to be < prod.length
+        end
+      end
+
+      context 'when optimize is set to false' do
+        it 'should not include the optimize flag' do
+          dev = Elm::Compiler.compile(test_file, elm_path: elm_path, optimize: false)
           expect(dev.length).to eq prod.length
         end
       end
