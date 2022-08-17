@@ -50,14 +50,14 @@ describe Elm::Compiler do
       end
     end
 
-    context 'elm_make_path given' do
+    context 'elm_path given' do
       it 'should raise ExecutableNoFound if path is bad' do
-        code = proc { Elm::Compiler.compile(test_file, elm_make_path: "/dev/null") }
+        code = proc { Elm::Compiler.compile(test_file, elm_path: "/dev/null") }
         expect(&code).to raise_exception(Elm::Compiler::ExecutableNotFound)
       end
 
       it 'should work if path is good' do
-        output = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make')
+        output = Elm::Compiler.compile(test_file, elm_path: 'elm')
         expect(output).to be_instance_of(String)
         expect(output.empty?).to be(false)
       end
@@ -65,10 +65,9 @@ describe Elm::Compiler do
 
     context 'native debugger' do
       it 'output should include native debugger functions if debug set to true' do
-        prod = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make')
-        dev = Elm::Compiler.compile(test_file, elm_make_path: 'elm-make', debug: true)
+        prod = Elm::Compiler.compile(test_file, elm_path: 'elm')
+        dev = Elm::Compiler.compile(test_file, elm_path: 'elm', debug: true)
         expect(dev.length).to be > prod.length
-        expect(dev).to include('_elm_lang$virtual_dom$Native_Debug')
       end
     end
   end

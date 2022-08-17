@@ -1,4 +1,7 @@
-import Html exposing (text)
+module Test exposing (main)
+
+import Html
 
 main =
-  text "test"
+    Html.text "test"
+

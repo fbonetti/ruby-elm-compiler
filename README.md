@@ -28,16 +28,16 @@ Or install it yourself as:
 
 ## Usage
 
-> NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm-make` executable can't be found in the current `PATH` or via the `elm_make_path` option, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
+> NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm` executable can't be found in the current `PATH` or via the `elm_path` option, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
 
 ```ruby
-Elm::Compiler.compile(elm_files, output_path: nil, elm_make_path: nil)
+Elm::Compiler.compile(elm_files, output_path: nil, elm_path: nil, debug: false)
 ```
 
 * `elm_files`: Accepts a single file path or an array of file paths.
 * `output_path`: Path to the output file. If left blank, the compiled Javascript will be returned as a string.
-* `elm_make_path`: Path to the `elm-make` executable. If left blank, the executable will be looked up in the current `PATH`.
-
+* `elm_path`: Path to the `elm` executable. If left blank, the executable will be looked up in the current `PATH`.
+* `debug`: Whether or not to compile in debug mode. Default is false.
 
 
 ## Examples

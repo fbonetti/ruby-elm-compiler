@@ -10,3 +10,6 @@
 /elm-stuff/
 /elm.js
 *.gem
+/.ruby-version
+/.ruby-gemset
+/.byebug_history
