@@ -1,6 +1,6 @@
 # elm-compiler
 
-[![Build Status](https://travis-ci.org/fbonetti/ruby-elm-compiler.svg?branch=master)](https://travis-ci.org/fbonetti/ruby-elm-compiler)
+[![Build Status](https://github.com/fbonetti/ruby-elm-compiler/actions/workflows/ci.yml/badge.svg)](https://github.com/fbonetti/ruby-elm-compiler/actions/workflows/ci.yml)
 
 Ruby wrapper for the [Elm language compiler](https://github.com/elm-lang/elm-compiler).
 
@@ -36,7 +36,7 @@ Elm::Compiler.compile(elm_files, output_path: nil, elm_path: nil, debug: false)
 
 * `elm_files`: Accepts a single file path or an array of file paths.
 * `output_path`: Path to the output file. If left blank, the compiled Javascript will be returned as a string.
-* `elm_path`: Path to the `elm` executable. If left blank, the executable will be looked up in the current `PATH`.
+* `elm_path`: Path to the `elm` executable. If left blank, the executable will be looked up in the current `PATH`, if that cannot be found, it will download elm to /tmp/elm-0.19.1 and use that.
 * `debug`: Whether or not to compile in debug mode. Default is false.
 
 
