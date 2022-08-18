@@ -29,8 +29,14 @@ module Elm
       end
 
       def elm_make(elm_path, elm_files, output_path, debug)
-        args = [{"LANG" => "en_US.UTF8" }, elm_path, "make", *elm_files, "--output=#{output_path}"]
-        args << "--debug" if debug
+        args = [
+          {"LANG" => "en_US.UTF8" },
+          elm_path,
+          "make",
+          *elm_files,
+          "--output=#{output_path}",
+          debug ? "--debug" : "--optimize",
+        ]
         Open3.popen3(*args) do |_stdin, _stdout, stderr, wait_thr|
           fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
         end
