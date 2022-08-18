@@ -5,9 +5,13 @@ require 'tempfile'
 module Elm
   class Compiler
     class << self
-      def compile(elm_files, output_path: nil, elm_path: "elm", debug: false)
-        fail ExecutableNotFound unless elm_executable_exists?(elm_path)
+      attr_writer :elm_path
+      def elm_path
+        @elm_path ||= elm_from_env_path || our_elm_path
+      end
 
+      def compile(elm_files, output_path: nil, elm_path: self.elm_path, debug: false)
+        fail ExecutableNotFound unless elm_executable_exists?(elm_path)
         if output_path
           elm_make(elm_path, elm_files, output_path, debug)
         else
@@ -16,12 +20,6 @@ module Elm
       end
 
       private
-
-      def elm_executable_exists?(elm_path)
-        Open3.popen2(elm_path){}.nil?
-      rescue Errno::ENOENT, Errno::EACCES
-        false
-      end
 
       def compile_to_string(elm_path, elm_files, debug)
         Tempfile.open(['elm', '.js']) do |tempfile|
@@ -36,6 +34,28 @@ module Elm
         Open3.popen3(*args) do |_stdin, _stdout, stderr, wait_thr|
           fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
         end
+      end
+
+      def elm_executable_exists?(path)
+        `#{path} --version`.strip == "0.19.1"
+      rescue
+        false
+      end
+
+      def elm_from_env_path
+        `which elm`.chomp.tap { |p| return nil if p == "" }
+      end
+
+      def our_elm_path
+        path = "/tmp/elm-0.19.1"
+        unless elm_executable_exists?(path)
+          system """
+            curl -sfLo #{path}.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
+            gunzip -f #{path}.gz
+            chmod +x #{path}
+          """
+        end
+        path
       end
     end
   end

@@ -57,16 +57,18 @@ describe Elm::Compiler do
       end
 
       it 'should work if path is good' do
-        output = Elm::Compiler.compile(test_file, elm_path: 'elm')
+        system "cp /tmp/elm-0.19.1 /tmp/copy-of-elm"
+        output = Elm::Compiler.compile(test_file, elm_path: '/tmp/copy-of-elm')
         expect(output).to be_instance_of(String)
         expect(output.empty?).to be(false)
+        system "rm /tmp/copy-of-elm"
       end
     end
 
     context 'native debugger' do
       it 'output should include native debugger functions if debug set to true' do
-        prod = Elm::Compiler.compile(test_file, elm_path: 'elm')
-        dev = Elm::Compiler.compile(test_file, elm_path: 'elm', debug: true)
+        prod = Elm::Compiler.compile(test_file)
+        dev = Elm::Compiler.compile(test_file, debug: true)
         expect(dev.length).to be > prod.length
       end
     end
