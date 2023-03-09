@@ -31,13 +31,14 @@ Or install it yourself as:
 > NOTE: Make sure [Elm](http://elm-lang.org/install) is installed. If the `elm` executable can't be found in the current `PATH` or via the `elm_path` option, the exception `Elm::Compiler::ExecutableNotFound` will be thrown.
 
 ```ruby
-Elm::Compiler.compile(elm_files, output_path: nil, elm_path: nil, debug: false)
+Elm::Compiler.compile(elm_files, output_path: nil, elm_path: nil, debug: false, esm: false)
 ```
 
 * `elm_files`: Accepts a single file path or an array of file paths.
 * `output_path`: Path to the output file. If left blank, the compiled Javascript will be returned as a string.
 * `elm_path`: Path to the `elm` executable. If left blank, the executable will be looked up in the current `PATH`, if that cannot be found, it will download elm to /tmp/elm-0.19.1 and use that.
 * `debug`: Whether or not to compile in debug mode. Default is false.
+* `esm`: Whether or not to rewrite the compilation result into ESM format. Default is false. Can also be set on a global basis by `Elm::Compiler.elm = true`
 
 
 ## Examples
