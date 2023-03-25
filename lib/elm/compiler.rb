@@ -10,25 +10,27 @@ module Elm
         @elm_path ||= elm_from_env_path || our_elm_path
       end
 
-      def compile(elm_files, output_path: nil, elm_path: self.elm_path, debug: false)
+      attr_accessor :esm
+
+      def compile(elm_files, output_path: nil, elm_path: self.elm_path, debug: false, esm: self.esm)
         fail ExecutableNotFound unless elm_executable_exists?(elm_path)
         if output_path
-          elm_make(elm_path, elm_files, output_path, debug)
+          elm_make(elm_path, elm_files, output_path, debug, esm)
         else
-          compile_to_string(elm_path, elm_files, debug)
+          compile_to_string(elm_path, elm_files, debug, esm)
         end
       end
 
       private
 
-      def compile_to_string(elm_path, elm_files, debug)
+      def compile_to_string(elm_path, elm_files, debug, esm)
         Tempfile.open(['elm', '.js']) do |tempfile|
-          elm_make(elm_path, elm_files, tempfile.path, debug)
+          elm_make(elm_path, elm_files, tempfile.path, debug, esm)
           return File.read tempfile.path
         end
       end
 
-      def elm_make(elm_path, elm_files, output_path, debug)
+      def elm_make(elm_path, elm_files, output_path, debug, esm)
         args = [
           {"LANG" => "en_US.UTF8" },
           elm_path,
@@ -40,6 +42,19 @@ module Elm
         Open3.popen3(*args) do |_stdin, _stdout, stderr, wait_thr|
           fail CompileError, stderr.gets(nil) if wait_thr.value.exitstatus != 0
         end
+        convert_file_to_esm!(output_path) if esm
+      end
+
+      def convert_file_to_esm!(path)
+        contents = File.read(path)
+        exports = contents[/^\s*_Platform_export\((.*)\)\;\n?\}\(this\)\)\;/, 1]
+        contents.gsub!(/\(function\s*\(scope\)\s*\{$/, '// -- \1')
+        contents.gsub!(/['"]use strict['"];$/, '// -- \1')
+        contents.gsub!(/function _Platform_export(.*?)\}\n/, '/*\n\1\n*/')
+        contents.gsub!(/function _Platform_mergeExports(.*?)\}\n\s*}/, '/*\n\1\n*/')
+        contents.gsub!(/^\s*_Platform_export\((.*)\)\;\n?}\(this\)\)\;/, '/*\n\1\n*/')
+        contents << "\nexport default #{exports};"
+        File.write(path, contents)
       end
 
       def elm_executable_exists?(path)
