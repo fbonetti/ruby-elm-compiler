@@ -47,12 +47,10 @@ module Elm
 
       def convert_file_to_esm!(path)
         contents = File.read(path)
-        exports = contents[/^\s*_Platform_export\((.*)\)\;\n?\}\(this\)\)\;/, 1]
-        contents.gsub!(/\(function\s*\(scope\)\s*\{$/, '// -- \1')
+        exports = contents[/^\s*_Platform_export\((.*)\)\;\n?\}\(this\)\)\;/m, 1]
+        contents.gsub!(/\(function\s*\(scope\)\s*\{$/m, '// -- \1')
         contents.gsub!(/['"]use strict['"];$/, '// -- \1')
-        contents.gsub!(/function _Platform_export(.*?)\}\n/, '/*\n\1\n*/')
-        contents.gsub!(/function _Platform_mergeExports(.*?)\}\n\s*}/, '/*\n\1\n*/')
-        contents.gsub!(/^\s*_Platform_export\((.*)\)\;\n?}\(this\)\)\;/, '/*\n\1\n*/')
+        contents.gsub!(/^\s*_Platform_export\((.*)\)\;\n?\}\(this\)\)\;/m, '/*\n\1\n*/')
         contents << "\nexport default #{exports};"
         File.write(path, contents)
       end

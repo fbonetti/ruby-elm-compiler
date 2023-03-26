@@ -79,5 +79,12 @@ describe Elm::Compiler do
         expect(output).to include("export default {")
       end
     end
+
+    context 'esm output and debugger' do
+      it 'output should be an ES Module' do
+        output = Elm::Compiler.compile(test_file, esm: true, debug: true)
+        expect(output).to include("export default {")
+      end
+    end
   end
 end
